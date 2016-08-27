@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/jroimartin/gocui"
-	"log"
 )
 
 const (
@@ -59,11 +58,11 @@ func startSelect(g *gocui.Gui, v *gocui.View) error {
 		case startStartID:
 			g.DeleteView("startMenu")
 			g.DeleteView("startBackground")
-			g.SetLayout(layout)
-			err := g.SetCurrentView("control")
-			if err != nil {
-				log.Println(err)
-			}
+			WorldState = new(gamestate)
+			WorldState.player = new(Player)
+			WorldState.player.character = new(Character)
+			initCreationScreenSettings()
+			g.SetLayout(charCreationLayout)
 			//unpause()
 		case startQuitID:
 			return gocui.ErrQuit

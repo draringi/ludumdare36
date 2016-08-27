@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/jroimartin/gocui"
-	"log"
 )
 
 const (
@@ -59,7 +58,7 @@ func menuSelect(g *gocui.Gui, v *gocui.View) error {
 			g.DeleteView("menu")
 			err := g.SetCurrentView("control")
 			if err != nil {
-				log.Println(err)
+				return err
 			}
 			//unpause()
 		case menuQuitID:
@@ -89,9 +88,7 @@ func createMenu(g *gocui.Gui) error {
 }
 
 func loadMenu(g *gocui.Gui, v *gocui.View) error {
-	log.Println("Loading Menu")
 	if v == nil || v.Name() != "menu" {
-		log.Println("Creating Menu")
 		err := createMenu(g)
 		if err != nil {
 			return err

@@ -29,9 +29,29 @@ func setKeyBindings(g *gocui.Gui) error {
 	if err != nil {
 		return err
 	}
+	err = g.SetKeybinding("creationInterface", gocui.KeyArrowDown, gocui.ModNone, creationDown)
+	if err != nil {
+		return err
+	}
+	err = g.SetKeybinding("creationInterface", gocui.KeyArrowUp, gocui.ModNone, creationUp)
+	if err != nil {
+		return err
+	}
+	err = g.SetKeybinding("creationInterface", gocui.KeyEnter, gocui.ModNone, creationSelect)
+	if err != nil {
+		return err
+	}
 	err = g.SetKeybinding("control", '`', gocui.ModNone, loadMenu)
 	if err != nil {
 		return err
 	}
+	err = g.SetKeybinding("", gocui.KeyCtrlQ, gocui.ModNone, quit)
+	if err != nil {
+		return err
+	}
 	return nil
+}
+
+func quit(g *gocui.Gui, v *gocui.View) error {
+	return gocui.ErrQuit
 }
