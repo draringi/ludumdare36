@@ -13,11 +13,11 @@ const (
 )
 
 const (
-	returnID = iota
-	loadID
-	saveID
-	settingsID
-	quitID
+	menuReturnID = iota
+	menuLoadID
+	menuSaveID
+	menuSettingsID
+	menuQuitID
 )
 
 func menuUp(g *gocui.Gui, v *gocui.View) error {
@@ -55,14 +55,14 @@ func menuSelect(g *gocui.Gui, v *gocui.View) error {
 		_, cy := v.Cursor()
 
 		switch cy {
-		case returnID:
+		case menuReturnID:
 			g.DeleteView("menu")
 			err := g.SetCurrentView("control")
 			if err != nil {
 				log.Println(err)
 			}
 			//unpause()
-		case quitID:
+		case menuQuitID:
 			return gocui.ErrQuit
 		}
 	}

@@ -17,7 +17,19 @@ func setKeyBindings(g *gocui.Gui) error {
 	if err != nil {
 		return err
 	}
-	err = g.SetKeybinding("", '`', gocui.ModNone, loadMenu)
+	err = g.SetKeybinding("startMenu", gocui.KeyArrowDown, gocui.ModNone, startDown)
+	if err != nil {
+		return err
+	}
+	err = g.SetKeybinding("startMenu", gocui.KeyArrowUp, gocui.ModNone, startUp)
+	if err != nil {
+		return err
+	}
+	err = g.SetKeybinding("startMenu", gocui.KeyEnter, gocui.ModNone, startSelect)
+	if err != nil {
+		return err
+	}
+	err = g.SetKeybinding("control", '`', gocui.ModNone, loadMenu)
 	if err != nil {
 		return err
 	}

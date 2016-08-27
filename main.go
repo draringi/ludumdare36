@@ -14,7 +14,7 @@ func main() {
 		log.Panicln(err)
 	}
 	defer g.Close()
-	g.Cursor = true
+	g.Cursor = false
 	g.SetLayout(initLayout)
 	err = setKeyBindings(g)
 	if err != nil {
@@ -39,6 +39,10 @@ func layout(g *gocui.Gui) error {
 			return err
 		}
 		fmt.Fprintln(v, "Hello world!")
+		err = g.SetCurrentView("control")
+		if err != nil {
+			log.Println(err)
+		}
 	}
 	return nil
 }

@@ -5,6 +5,6 @@ import (
 )
 
 func initLayout(g *gocui.Gui) error {
-     g.SetLayout(layout)
+		 g.SetLayout(startMenuLayout)
      return nil
 }
