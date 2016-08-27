@@ -1,29 +1,44 @@
 package main
 
 import (
-  "github.com/nsf/termbox-go"
-  "log"
+	"fmt"
+	"github.com/jroimartin/gocui"
+	"log"
 )
 
 func main() {
-  init_os()
-  err :=  termbox.Init()
-  if err != nil {
-    log.Println(err)
-    return
-  }
-  defer termbox.Close()
-  mainloop:
-  for {
-		switch ev := termbox.PollEvent(); ev.Type {
-		case termbox.EventKey:
-			switch ev.Key {
-			case termbox.KeyEsc:
-				break mainloop
-			}
-		case termbox.EventError:
-			log.Println(ev.Err)
-      return
-		}
+	init_os()
+	g := gocui.NewGui()
+	err := g.Init()
+	if err != nil {
+		log.Panicln(err)
+	}
+	defer g.Close()
+	g.Cursor = true
+	g.SetLayout(initLayout)
+	err = setKeyBindings(g)
+	if err != nil {
+		log.Panicln(err)
+	}
+	if err := g.MainLoop(); err != nil && err != gocui.ErrQuit {
+		log.Panicln(err)
+	}
 }
+
+func layout(g *gocui.Gui) error {
+	maxX, maxY := g.Size()
+	barrier := maxY * 3 / 4
+	if v, err := g.SetView("main", 0, 0, maxX-1, barrier); err != nil {
+		if err != gocui.ErrUnknownView {
+			return err
+		}
+		fmt.Fprintln(v, "Hello world!")
+	}
+	if v, err := g.SetView("control", 0, barrier, maxX-1, maxY-1); err != nil {
+		if err != gocui.ErrUnknownView {
+			return err
+		}
+		fmt.Fprintln(v, "Hello world!")
+	}
+	return nil
 }
