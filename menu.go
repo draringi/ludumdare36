@@ -92,14 +92,14 @@ func loadMenu(g *gocui.Gui, v *gocui.View) error {
 	log.Println("Loading Menu")
 	if v == nil || v.Name() != "menu" {
 		log.Println("Creating Menu")
-	err := createMenu(g)
-	if err != nil {
-		return err
+		err := createMenu(g)
+		if err != nil {
+			return err
+		}
+		err = g.SetCurrentView("menu")
+		if err != nil {
+			return err
+		}
 	}
-	err = g.SetCurrentView("menu")
-	if err != nil {
-		return err
-	}
-}
 	return nil
 }

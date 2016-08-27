@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 	"github.com/jroimartin/gocui"
-  "log"
+	"log"
 )
 
 const (
-  startmenuItemCount = 4
+	startmenuItemCount = 4
 )
 
 const (
@@ -18,7 +18,7 @@ const (
 )
 
 func drawBackground(v *gocui.View) {
-  // Insert cool art here
+	// Insert cool art here
 }
 
 func startUp(g *gocui.Gui, v *gocui.View) error {
@@ -58,10 +58,10 @@ func startSelect(g *gocui.Gui, v *gocui.View) error {
 		switch cy {
 		case startStartID:
 			g.DeleteView("startMenu")
-      g.DeleteView("startBackground")
-      g.SetLayout(layout)
-      err := g.SetCurrentView("control")
-      if err != nil {
+			g.DeleteView("startBackground")
+			g.SetLayout(layout)
+			err := g.SetCurrentView("control")
+			if err != nil {
 				log.Println(err)
 			}
 			//unpause()
@@ -73,26 +73,26 @@ func startSelect(g *gocui.Gui, v *gocui.View) error {
 }
 
 func startMenuLayout(g *gocui.Gui) error {
-  maxX, maxY := g.Size()
-  if v, err := g.SetView("startBackground", 0, 0, maxX - 1, maxY - 1); err != nil {
-    if err != gocui.ErrUnknownView {
+	maxX, maxY := g.Size()
+	if v, err := g.SetView("startBackground", 0, 0, maxX-1, maxY-1); err != nil {
+		if err != gocui.ErrUnknownView {
 			return err
 		}
-    drawBackground(v)
-  }
-  if v, err := g.SetView("startMenu", maxX/2 - 7, maxY * 3/4 - startmenuItemCount/2 - 1, maxX/2 + 7, maxY * 3/4 + startmenuItemCount/2); err != nil {
-    if err != gocui.ErrUnknownView {
+		drawBackground(v)
+	}
+	if v, err := g.SetView("startMenu", maxX/2-7, maxY*3/4-startmenuItemCount/2-1, maxX/2+7, maxY*3/4+startmenuItemCount/2); err != nil {
+		if err != gocui.ErrUnknownView {
 			return err
 		}
-    v.Highlight = true
-    fmt.Fprintln(v, "Start")
+		v.Highlight = true
+		fmt.Fprintln(v, "Start")
 		fmt.Fprintln(v, "Load")
 		fmt.Fprintln(v, "Settings")
 		fmt.Fprintln(v, "Quit")
-    err = g.SetCurrentView("startMenu")
-    if err != nil {
-      return err
-    }
-  }
-  return nil
+		err = g.SetCurrentView("startMenu")
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
