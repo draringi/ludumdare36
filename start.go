@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/jroimartin/gocui"
+	"sync"
 )
 
 const (
@@ -59,6 +60,8 @@ func startSelect(g *gocui.Gui, v *gocui.View) error {
 			g.DeleteView("startMenu")
 			g.DeleteView("startBackground")
 			WorldState = new(gamestate)
+			WorldState.logLock = new(sync.Mutex)
+			WorldState.date = startDate
 			WorldState.player = new(Player)
 			WorldState.player.character = new(Character)
 			initCreationScreenSettings()

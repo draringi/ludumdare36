@@ -60,7 +60,9 @@ func menuSelect(g *gocui.Gui, v *gocui.View) error {
 			if err != nil {
 				return err
 			}
-			//unpause()
+			if unpauseOnMenuLeave {
+				WorldState.gameLoop.TogglePause()
+			}
 		case menuQuitID:
 			return gocui.ErrQuit
 		}
@@ -87,8 +89,16 @@ func createMenu(g *gocui.Gui) error {
 	return nil
 }
 
+var unpauseOnMenuLeave bool
+
 func loadMenu(g *gocui.Gui, v *gocui.View) error {
 	if v == nil || v.Name() != "menu" {
+		if !WorldState.gameLoop.paused {
+			WorldState.gameLoop.TogglePause()
+			unpauseOnMenuLeave = true
+		} else {
+			unpauseOnMenuLeave = false
+		}
 		err := createMenu(g)
 		if err != nil {
 			return err
