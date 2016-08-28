@@ -17,6 +17,30 @@ func setKeyBindings(g *gocui.Gui) error {
 	if err != nil {
 		return err
 	}
+	err = g.SetKeybinding("soundMenu", gocui.KeyArrowDown, gocui.ModNone, soundDown)
+	if err != nil {
+		return err
+	}
+	err = g.SetKeybinding("soundMenu", gocui.KeyArrowUp, gocui.ModNone, soundUp)
+	if err != nil {
+		return err
+	}
+	err = g.SetKeybinding("soundMenu", gocui.KeyEnter, gocui.ModNone, soundSelect)
+	if err != nil {
+		return err
+	}
+	err = g.SetKeybinding("rationingMenu", gocui.KeyArrowDown, gocui.ModNone, rationingDown)
+	if err != nil {
+		return err
+	}
+	err = g.SetKeybinding("rationingMenu", gocui.KeyArrowUp, gocui.ModNone, rationingUp)
+	if err != nil {
+		return err
+	}
+	err = g.SetKeybinding("rationingMenu", gocui.KeyEnter, gocui.ModNone, rationingSelect)
+	if err != nil {
+		return err
+	}
 	err = g.SetKeybinding("startMenu", gocui.KeyArrowDown, gocui.ModNone, startDown)
 	if err != nil {
 		return err
@@ -42,6 +66,14 @@ func setKeyBindings(g *gocui.Gui) error {
 		return err
 	}
 	err = g.SetKeybinding("control", '`', gocui.ModNone, loadMenu)
+	if err != nil {
+		return err
+	}
+	err = g.SetKeybinding("control", 's', gocui.ModNone, loadSoundMenu)
+	if err != nil {
+		return err
+	}
+	err = g.SetKeybinding("control", 'r', gocui.ModNone, loadrationingMenu)
 	if err != nil {
 		return err
 	}

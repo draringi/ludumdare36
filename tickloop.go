@@ -70,7 +70,8 @@ func (g *GameLoop) run() {
 				// Bad Things happen
 
 			}
-			// Healing and Bad Effects
+			// Healing, Bad Effects, and death checks
+			player.DailyChecks()
 
 			// Update UI
 			g.gui.Execute(updateGUI)

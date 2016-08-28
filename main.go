@@ -76,10 +76,10 @@ func printStatusToView(state *gamestate, v *gocui.View) {
 	v.Clear()
 	v.SetOrigin(0, 0)
 	if state.gameLoop.paused {
-		fmt.Fprintln(v, "\x1b[0;31m[PAUSED]\x1b[0;37m")
+		fmt.Fprintln(v, "\x1b[0;31m[P]aused\x1b[0;37m")
 	}
 	fmt.Fprintf(v, "Date: %v\n", state.date)
-	fmt.Fprintf(v, "\nParty Leader: %s \n\tHealth: %d/%d\n\tMana: %d/%d\n", state.player.character.name, state.player.character.health, state.player.character.maxHealth, state.player.mana, state.player.attributes.maxMana)
+	fmt.Fprintf(v, "\nParty Leader: %s \n\tProfession: %v\n\tHealth: %d/%d\n\tMana: %d/%d\n\tHunger Levels: %s\n", state.player.character.name, state.player.profession, state.player.character.health, state.player.character.maxHealth, state.player.mana, state.player.attributes.maxMana, state.player.character.HungerString())
 	fmt.Fprintln(v, "\nParty:")
 	for _, c := range state.player.party {
 		fmt.Fprintf(v, "\t%s ", c.name)
@@ -90,4 +90,7 @@ func printStatusToView(state *gamestate, v *gocui.View) {
 		}
 	}
 	fmt.Fprintf(v, "\nMoney: %d coins\nFood: %dlb\n", state.player.money, state.player.food)
+	fmt.Fprintf(v, "\nDistance Travelled: %.0fkm\nDestination: 3055km\n", state.player.kilometersTravelled)
+	fmt.Fprintf(v, "Current [S]peed: %v\n", state.player.speed)
+	fmt.Fprintf(v, "Current [R]ationing: %v\n", state.player.rationing)
 }

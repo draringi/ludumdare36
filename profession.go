@@ -9,7 +9,7 @@ var (
 type playerModifier func(p *Player)
 
 func doctorMod(p *Player) {
-	p.attributes.healingRate = 2
+	p.attributes.healingRate *= 2
 	p.character.maxHealth += 50
 	for _, c := range p.party {
 		c.maxHealth += 50
@@ -25,7 +25,7 @@ func nobleMod(p *Player) {
 }
 
 func quillMod(p *Player) {
-	p.attributes.movementRate *= 1.5
+	p.attributes.movementRate = 1.5
 }
 
 type Profession struct {
@@ -43,4 +43,8 @@ func init() {
 	}
 	professionListOffset = len(professionList) / 2
 	professionListOddness = len(professionList) - 2*professionListOffset
+}
+
+func (p *Profession) String() string {
+	return p.name
 }
