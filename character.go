@@ -20,25 +20,35 @@ func (c *Character) Init() {
 	c.alive = true
 }
 
-func (c *Character) Heal(val int) {
+func (c *Character) Heal(val int) int {
 	if c.health == c.maxHealth {
-		return
+		return 0
 	}
+	healed := val
 	if val > 0 {
 		c.health += val
 		if c.health > c.maxHealth {
+			healed = c.maxHealth - c.health
 			c.health = c.maxHealth
 		}
 	} else {
 		c.health = c.maxHealth
 	}
+	return healed
 }
 
 func (c *Character) HungerEffect(healingRate float64) {
 	if c.hunger > 0 {
 		// Heal
 		healAmmount := int(healingRate * float64(c.hunger))
-		c.Heal(healAmmount)
+		if healAmmount > 0 {
+			healed := c.Heal(healAmmount)
+			if healed > 0 {
+				WorldState.logLock.Lock()
+				WorldState.log = append(WorldState.log, NewLogEntry(WorldState.date, "%v recovered %d points of health", c, healed))
+				WorldState.logLock.Unlock()
+			}
+		}
 	} else {
 		//take damage, unless at hunger == 0
 		c.health += int(c.hunger)
@@ -61,7 +71,7 @@ func (c *Character) HungerString() string {
 		return "Full"
 	} else if c.hunger > 4 {
 		return "Well Fed"
-	} else if c.hunger > 0 {
+	} else if c.hunger > -1 {
 		return "Satisfied"
 	} else if c.hunger > -3 {
 		return "Hungry"

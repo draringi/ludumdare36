@@ -85,6 +85,10 @@ func setKeyBindings(g *gocui.Gui) error {
 	if err != nil {
 		return err
 	}
+	err = g.SetKeybinding("gameover", gocui.KeyEnter, gocui.ModNone, gameoverToStartMenu)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

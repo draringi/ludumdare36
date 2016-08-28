@@ -67,12 +67,15 @@ func (g *GameLoop) run() {
 			risk := speed.Risk()
 			roll := rand.Float64()
 			if roll < risk {
-				// Bad Things happen
-
+				triggerBadEvent(WorldState)
 			}
 			// Healing, Bad Effects, and death checks
 			player.DailyChecks()
 
+			// Check if the player is dead
+			if !player.character.alive {
+				g.gui.Execute(triggerGameover)
+			}
 			// Update UI
 			g.gui.Execute(updateGUI)
 		case <-g.kill:
