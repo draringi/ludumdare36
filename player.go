@@ -19,6 +19,7 @@ type Player struct {
 type Attributes struct {
 	healingRate  float64
 	maxMana      uint16
+	manaRecovery uint16
 	movementRate float64
 }
 
@@ -78,7 +79,13 @@ func (p *Player) DailyChecks() {
 		p.rationing = oldRationing
 	}
 	//Do anything else that needs to be done
-
+	// Recover Mana, if Magus
+	if p.mana < p.attributes.maxMana && p.attributes.manaRecovery > 0 {
+		p.mana += p.attributes.manaRecovery
+		if p.mana > p.attributes.maxMana {
+			p.mana = p.attributes.maxMana
+		}
+	}
 	// Final death checks
 	p.character.AliveCheck()
 	for _, c := range p.party {

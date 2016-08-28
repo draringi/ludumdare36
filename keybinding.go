@@ -81,6 +81,10 @@ func setKeyBindings(g *gocui.Gui) error {
 	if err != nil {
 		return err
 	}
+	err = g.SetKeybinding("control", 'h', gocui.ModNone, huntAction)
+	if err != nil {
+		return err
+	}
 	err = g.SetKeybinding("", gocui.KeyCtrlQ, gocui.ModNone, quit)
 	if err != nil {
 		return err

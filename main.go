@@ -90,7 +90,8 @@ func printStatusToView(state *gamestate, v *gocui.View) {
 		}
 	}
 	fmt.Fprintf(v, "\nMoney: %d coins\nFood: %dlb\n", state.player.money, state.player.food)
-	fmt.Fprintf(v, "\nDistance Travelled: %.0fkm\nDestination: 3055km\n", state.player.kilometersTravelled)
+	fmt.Fprintf(v, "\nDistance Travelled: %.0fkm\nDestination: 3055km\n\n", state.player.kilometersTravelled)
 	fmt.Fprintf(v, "Current [S]peed: %v\n", state.player.speed)
 	fmt.Fprintf(v, "Current [R]ationing: %v\n", state.player.rationing)
+	fmt.Fprintln(v, "\nExtra Actions: [H]unt, [~]Menu")
 }

@@ -18,6 +18,7 @@ func doctorMod(p *Player) {
 
 func magusMod(p *Player) {
 	p.attributes.maxMana += 50
+	p.attributes.manaRecovery = 1
 }
 
 func nobleMod(p *Player) {
@@ -36,8 +37,8 @@ type Profession struct {
 
 func init() {
 	professionList = []*Profession{
-		&Profession{"Doctor", "A Medical Person. Party Members Heal Quicker and everyone starts with more health.", doctorMod},
-		&Profession{"Magus", "A Magical Person. Able to cast more powerfull magic, regains mana quicker and has a higher mana capacity.", magusMod},
+		&Profession{"Medic", "A Medical Person. Party Members Heal Quicker and everyone starts with more health.", doctorMod},
+		&Profession{"Magus", "A Magical Person. Able to cast more powerfull magic, regains mana and has a higher mana capacity.", magusMod},
 		&Profession{"Noble", "A Rich Person. Starts with more money. Has no other redeeming features.\nJust a boring, rich, snob...", nobleMod},
 		&Profession{"Quillian Rogue", "Pie maker by day, rogue by night. Denies that the nation of Belgium ever existed and claims that Brussels was the capital of France.\nHas a bonus to movement", quillMod},
 	}
