@@ -173,6 +173,7 @@ func creationSelect(g *gocui.Gui, v *gocui.View) error {
 		WorldState.gameLoop = InitiateGameLoop(WorldState, g)
 		WorldState.gameLoop.start()
 		g.SetLayout(layout)
+		locationCheck(WorldState, g, true)
 	}
 	return nil
 }

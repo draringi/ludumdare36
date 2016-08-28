@@ -85,11 +85,40 @@ func setKeyBindings(g *gocui.Gui) error {
 	if err != nil {
 		return err
 	}
+	err = g.SetKeybinding("control", 't', gocui.ModNone, openTradeMenu)
+	if err != nil {
+		return err
+	}
 	err = g.SetKeybinding("", gocui.KeyCtrlQ, gocui.ModNone, quit)
 	if err != nil {
 		return err
 	}
 	err = g.SetKeybinding("gameover", gocui.KeyEnter, gocui.ModNone, gameoverToStartMenu)
+	if err != nil {
+		return err
+	}
+	err = g.SetKeybinding("locationText", gocui.KeyEnter, gocui.ModNone, locationPressEnter)
+	if err != nil {
+		return err
+	}
+	// Trade Window time
+	err = g.SetKeybinding("tradingView", gocui.KeyArrowDown, gocui.ModNone, tradeDown)
+	if err != nil {
+		return err
+	}
+	err = g.SetKeybinding("tradingView", gocui.KeyArrowUp, gocui.ModNone, tradeUp)
+	if err != nil {
+		return err
+	}
+	err = g.SetKeybinding("tradingView", gocui.KeyArrowLeft, gocui.ModNone, tradeLeft)
+	if err != nil {
+		return err
+	}
+	err = g.SetKeybinding("tradingView", gocui.KeyArrowRight, gocui.ModNone, tradeRight)
+	if err != nil {
+		return err
+	}
+	err = g.SetKeybinding("tradingView", gocui.KeyEnter, gocui.ModNone, tradeEnter)
 	if err != nil {
 		return err
 	}

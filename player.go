@@ -8,7 +8,7 @@ type Player struct {
 	profession          *Profession
 	party               []*Character
 	food                uint16
-	money               uint16
+	money               int
 	mana                uint16
 	speed               Speed
 	rationing           Rationing

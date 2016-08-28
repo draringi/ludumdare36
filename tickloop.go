@@ -30,6 +30,18 @@ func (g *GameLoop) TogglePause() bool {
 	return p
 }
 
+func (g *GameLoop) SetPause(paused bool) bool {
+	g.pausedLock.Lock()
+	g.paused = paused
+	g.pausedTrigger.Broadcast()
+	p := g.paused
+	g.pausedLock.Unlock()
+	if p {
+		g.hasPaused <- p
+	}
+	return p
+}
+
 func (g *GameLoop) run() {
 	var timer *time.Ticker
 	player := WorldState.player
@@ -55,6 +67,7 @@ func (g *GameLoop) run() {
 			WorldState.date = WorldState.date.Next()
 			player.lock.Unlock()
 			if speed != STOPPED {
+				currentCity = nil
 				distanceTraveledToday := speed.KilometresPerDay() * player.attributes.movementRate
 				player.lock.Lock()
 				player.kilometersTravelled += distanceTraveledToday
@@ -76,6 +89,7 @@ func (g *GameLoop) run() {
 			if !player.character.alive {
 				g.gui.Execute(triggerGameover)
 			}
+			locationCheck(WorldState, g.gui, false)
 			// Update UI
 			g.gui.Execute(updateGUI)
 		case <-g.kill:
