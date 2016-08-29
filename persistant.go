@@ -3,7 +3,6 @@ package main
 import (
 	"compress/lzw"
 	"encoding/gob"
-	"io"
 	"os"
 )
 
@@ -30,11 +29,7 @@ func savePersistantToDisk() error {
 	compressedStream := lzw.NewWriter(f, persistantDataOrder, 8)
 	defer compressedStream.Close()
 	enc := gob.NewEncoder(compressedStream)
-	err = enc.Encode(PersistantData)
-	if err != nil && err != io.EOF {
-		return err
-	}
-	return nil
+	return enc.Encode(PersistantData)
 }
 
 func loadPersistantFromDisk() error {
@@ -51,9 +46,5 @@ func loadPersistantFromDisk() error {
 	compressedStream := lzw.NewReader(f, persistantDataOrder, 8)
 	defer compressedStream.Close()
 	dec := gob.NewDecoder(compressedStream)
-	err = dec.Decode(PersistantData)
-	if err != nil && err != io.EOF {
-		return err
-	}
-	return nil
+	return dec.Decode(&PersistantData)
 }
