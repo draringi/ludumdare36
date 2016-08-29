@@ -3,11 +3,11 @@ package main
 import "sync"
 
 type gamestate struct {
-	player       *Player
-	nextLocation int
-	date         Date
+	Player       *Player
+	NextLocation int
+	Date         Date
 	logLock      sync.Locker
-	log          []LogEntry
+	Log          []LogEntry
 	gameLoop     *GameLoop
 }
 

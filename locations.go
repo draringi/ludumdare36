@@ -6,11 +6,11 @@ import (
 )
 
 func distanceToNextLocation() float64 {
-	i := WorldState.nextLocation
+	i := WorldState.NextLocation
 	if i < 0 || i >= len(locationList) {
 		return 0
 	}
-	return locationList[i].distance - WorldState.player.kilometersTravelled
+	return locationList[i].distance - WorldState.Player.KilometersTravelled
 }
 
 func totalDistanceToTravel() float64 {
@@ -61,16 +61,16 @@ var (
 var currentCity *Location
 
 func locationCheck(state *gamestate, g *gocui.Gui, eventThread bool) {
-	target := locationList[state.nextLocation]
-	if state.player.kilometersTravelled >= target.distance {
+	target := locationList[state.NextLocation]
+	if state.Player.KilometersTravelled >= target.distance {
 		state.gameLoop.SetPause(true)
 		// Make sure the player "stopped" in the city
-		state.player.kilometersTravelled = target.distance
+		state.Player.KilometersTravelled = target.distance
 		currentCity = target
 		state.logLock.Lock()
-		state.log = append(state.log, NewLogEntry(state.date, "Arrived in %s", target.name))
+		state.Log = append(state.Log, NewLogEntry(state.Date, "Arrived in %s", target.name))
 		state.logLock.Unlock()
-		state.nextLocation++
+		state.NextLocation++
 		if eventThread {
 			g.SetLayout(locationLayout)
 		} else {

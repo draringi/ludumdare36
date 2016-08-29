@@ -40,14 +40,14 @@ var marketPrices = map[*Location]TradePrices{
 func openTradeMenu(g *gocui.Gui, v *gocui.View) error {
 	if currentCity == nil {
 		WorldState.logLock.Lock()
-		WorldState.log = append(WorldState.log, LogEntry{WorldState.date, "Not in a city, no one to trade with..."})
+		WorldState.Log = append(WorldState.Log, LogEntry{WorldState.Date, "Not in a city, no one to trade with..."})
 		WorldState.logLock.Unlock()
 		logView, err := g.View("control")
 		if err != nil {
 			return err
 		}
 		WorldState.logLock.Lock()
-		printLogsToView(WorldState.log, logView)
+		printLogsToView(WorldState.Log, logView)
 		WorldState.logLock.Unlock()
 		return nil
 	}
@@ -73,8 +73,8 @@ func tradeLayout(g *gocui.Gui) error {
 			return err
 		}
 		v.Title = "Trading"
-		p := WorldState.player
-		fmt.Fprintf(v, "You currently have:\n\tMoney: %d\n\tMana: %d\n\tFood: %d", p.money, p.mana, p.food)
+		p := WorldState.Player
+		fmt.Fprintf(v, "You currently have:\n\tMoney: %d\n\tMana: %d\n\tFood: %d", p.Money, p.Mana, p.Food)
 	}
 	if v, err := g.SetView("tradeInfo", 0, maxY*3/4, maxX-1, maxY-1); err != nil {
 		if err != gocui.ErrUnknownView {
@@ -226,28 +226,28 @@ func tradeDown(g *gocui.Gui, v *gocui.View) error {
 func tradeLeft(g *gocui.Gui, v *gocui.View) error {
 	_, index := v.Cursor()
 	updated := false
-	p := WorldState.player
+	p := WorldState.Player
 	t := &currentTrade
 	pricelist := marketPrices[currentCity]
 	currentCost := currentTradeCost()
 	switch index {
 	case 0:
-		if t.manaBuy > 0 && int(p.mana) >= 5*(t.manaSell-t.manaBuy+1) {
+		if t.manaBuy > 0 && int(p.Mana) >= 5*(t.manaSell-t.manaBuy+1) {
 			t.manaBuy--
 			updated = true
 		}
 	case 1:
-		if t.manaSell > 0 && p.money > currentCost+pricelist.manaSell && int(p.attributes.maxMana) >= 5*(t.manaBuy-t.manaSell+1)+int(p.mana) {
+		if t.manaSell > 0 && p.Money > currentCost+pricelist.manaSell && int(p.Attributes.MaxMana) >= 5*(t.manaBuy-t.manaSell+1)+int(p.Mana) {
 			t.manaSell--
 			updated = true
 		}
 	case 2:
-		if t.foodBuy > 0 && int(p.food) >= 20*(t.foodSell-t.foodBuy+1) {
+		if t.foodBuy > 0 && int(p.Food) >= 20*(t.foodSell-t.foodBuy+1) {
 			t.foodBuy--
 			updated = true
 		}
 	case 3:
-		if t.foodSell > 0 && p.money > currentCost+pricelist.foodSell {
+		if t.foodSell > 0 && p.Money > currentCost+pricelist.foodSell {
 			t.foodSell--
 			updated = true
 		}
@@ -261,28 +261,28 @@ func tradeLeft(g *gocui.Gui, v *gocui.View) error {
 func tradeRight(g *gocui.Gui, v *gocui.View) error {
 	_, index := v.Cursor()
 	updated := false
-	p := WorldState.player
+	p := WorldState.Player
 	t := &currentTrade
 	pricelist := marketPrices[currentCity]
 	currentCost := currentTradeCost()
 	switch index {
 	case 0:
-		if p.money > currentCost+pricelist.manaBuy && int(p.attributes.maxMana) >= int(p.mana)+5*(t.manaBuy+1-t.manaSell) && t.manaBuy < 99 {
+		if p.Money > currentCost+pricelist.manaBuy && int(p.Attributes.MaxMana) >= int(p.Mana)+5*(t.manaBuy+1-t.manaSell) && t.manaBuy < 99 {
 			t.manaBuy++
 			updated = true
 		}
 	case 1:
-		if int(p.mana) > 5*(t.manaBuy-t.manaSell-1) && t.manaSell < 99 {
+		if int(p.Mana) > 5*(t.manaBuy-t.manaSell-1) && t.manaSell < 99 {
 			t.manaSell++
 			updated = true
 		}
 	case 2:
-		if p.money > currentCost+pricelist.foodBuy && t.foodBuy < 99 {
+		if p.Money > currentCost+pricelist.foodBuy && t.foodBuy < 99 {
 			t.foodBuy++
 			updated = true
 		}
 	case 3:
-		if int(p.food) > 20*(t.foodSell+1-t.foodBuy) && t.foodSell < 99 {
+		if int(p.Food) > 20*(t.foodSell+1-t.foodBuy) && t.foodSell < 99 {
 			t.foodSell++
 			updated = true
 		}
@@ -295,22 +295,22 @@ func tradeRight(g *gocui.Gui, v *gocui.View) error {
 
 func tradeEnter(g *gocui.Gui, v *gocui.View) error {
 	cost := currentTradeCost()
-	p := WorldState.player
+	p := WorldState.Player
 	t := &currentTrade
 	// Check Trade is valid
-	if cost > p.money || int(p.mana) < 5*(t.manaSell-t.manaBuy) || p.attributes.maxMana < uint16(int(p.mana)+5*(t.manaBuy-t.manaSell)) || int(p.food) < 20*(t.foodSell-t.foodBuy) {
+	if cost > p.Money || int(p.Mana) < 5*(t.manaSell-t.manaBuy) || p.Attributes.MaxMana < uint16(int(p.Mana)+5*(t.manaBuy-t.manaSell)) || int(p.Food) < 20*(t.foodSell-t.foodBuy) {
 		return nil
 	}
-	p.money -= cost
+	p.Money -= cost
 	if t.manaBuy > t.manaSell {
-		p.mana += 5 * uint16(t.manaBuy-t.manaSell)
+		p.Mana += 5 * uint16(t.manaBuy-t.manaSell)
 	} else {
-		p.mana -= 5 * uint16(t.manaSell-t.manaBuy)
+		p.Mana -= 5 * uint16(t.manaSell-t.manaBuy)
 	}
 	if t.foodBuy > t.foodSell {
-		p.food += 20 * uint16(t.foodBuy-t.foodSell)
+		p.Food += 20 * uint16(t.foodBuy-t.foodSell)
 	} else {
-		p.food -= 20 * uint16(t.foodSell-t.foodBuy)
+		p.Food -= 20 * uint16(t.foodSell-t.foodBuy)
 	}
 	g.DeleteView("tradeBackground")
 	g.DeleteView("tradeInfo")

@@ -44,7 +44,7 @@ func (g *GameLoop) SetPause(paused bool) bool {
 
 func (g *GameLoop) run() {
 	var timer *time.Ticker
-	player := WorldState.player
+	player := WorldState.Player
 	g.pausedLock.Lock()
 	for g.paused {
 		g.pausedTrigger.Wait()
@@ -63,18 +63,18 @@ func (g *GameLoop) run() {
 		case <-timer.C:
 			// Do game logic
 			player.lock.Lock()
-			speed := WorldState.player.speed
-			WorldState.date = WorldState.date.Next()
+			speed := WorldState.Player.Speed
+			WorldState.Date = WorldState.Date.Next()
 			player.lock.Unlock()
 			if speed != STOPPED {
 				currentCity = nil
-				distanceTraveledToday := speed.KilometresPerDay() * player.attributes.movementRate
+				distanceTraveledToday := speed.KilometresPerDay() * player.Attributes.MovementRate
 				player.lock.Lock()
-				player.kilometersTravelled += distanceTraveledToday
+				player.KilometersTravelled += distanceTraveledToday
 				player.lock.Unlock()
 			} else {
 				WorldState.logLock.Lock()
-				WorldState.log = append(WorldState.log, NewLogEntry(WorldState.date, "You didn't go anywhere..."))
+				WorldState.Log = append(WorldState.Log, NewLogEntry(WorldState.Date, "You didn't go anywhere..."))
 				WorldState.logLock.Unlock()
 			}
 			risk := speed.Risk()
@@ -86,7 +86,7 @@ func (g *GameLoop) run() {
 			player.DailyChecks()
 
 			// Check if the player is dead
-			if !player.character.alive {
+			if !player.Character.Alive {
 				g.gui.Execute(triggerGameover)
 			}
 			locationCheck(WorldState, g.gui, false)

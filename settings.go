@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-var activeSettings Settings
+var activeSettings *Settings
 
 type GameSpeed uint8
 

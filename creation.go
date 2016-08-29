@@ -91,7 +91,7 @@ func creationSelect(g *gocui.Gui, v *gocui.View) error {
 			fmt.Fprintln(info, "You MUST provide a name for your character")
 			return nil
 		}
-		WorldState.player.character.name = str
+		WorldState.Player.Character.Name = str
 		fmt.Fprintf(background, "Player's Name: %s\n", str)
 		v.Clear()
 		v.SetCursor(0, 0)
@@ -104,7 +104,7 @@ func creationSelect(g *gocui.Gui, v *gocui.View) error {
 		v.Highlight = true
 		v.Title = "Select your Profession"
 		for _, p := range professionList {
-			fmt.Fprintln(v, p.name)
+			fmt.Fprintln(v, p)
 		}
 		creationState = creationStatePlayerProfession
 		info.Clear()
@@ -112,8 +112,8 @@ func creationSelect(g *gocui.Gui, v *gocui.View) error {
 		fmt.Fprintln(info, professionList[0].description)
 	case creationStatePlayerProfession:
 		_, cy := v.Cursor()
-		WorldState.player.profession = professionList[cy]
-		fmt.Fprintf(background, "Player's Profession: %s\n", WorldState.player.profession.name)
+		WorldState.Player.Profession = professionList[cy]
+		fmt.Fprintf(background, "Player's Profession: %s\n", WorldState.Player.Profession.Name)
 		v.Clear()
 		v.SetCursor(0, 0)
 		v.SetOrigin(0, 0)
@@ -137,18 +137,18 @@ func creationSelect(g *gocui.Gui, v *gocui.View) error {
 		if len(str) == 0 {
 			info.Clear()
 			info.SetOrigin(0, 0)
-			fmt.Fprintf(info, "Name your Party Member (%d/%d)\n", len(WorldState.player.party)+1, partyCount)
+			fmt.Fprintf(info, "Name your Party Member (%d/%d)\n", len(WorldState.Player.Party)+1, partyCount)
 			fmt.Fprintln(info, "You MUST provide a name for your party members")
 			return nil
 		}
 		c := new(Character)
-		c.name = str
-		WorldState.player.party = append(WorldState.player.party, c)
-		fmt.Fprintf(background, "Party Member %d/%d: %s\n", len(WorldState.player.party), partyCount, str)
+		c.Name = str
+		WorldState.Player.Party = append(WorldState.Player.Party, c)
+		fmt.Fprintf(background, "Party Member %d/%d: %s\n", len(WorldState.Player.Party), partyCount, str)
 		v.Clear()
 		v.SetOrigin(0, 0)
 		v.SetCursor(0, 0)
-		if len(WorldState.player.party) == partyCount {
+		if len(WorldState.Player.Party) == partyCount {
 			g.Cursor = false
 			v.Editable = false
 			v.Highlight = true
@@ -162,11 +162,11 @@ func creationSelect(g *gocui.Gui, v *gocui.View) error {
 		} else {
 			info.Clear()
 			info.SetOrigin(0, 0)
-			fmt.Fprintf(info, "Name your Party Member (%d/%d)", len(WorldState.player.party)+1, partyCount)
+			fmt.Fprintf(info, "Name your Party Member (%d/%d)", len(WorldState.Player.Party)+1, partyCount)
 		}
 	case creationStateConfirm:
-		WorldState.player.Init()
-		WorldState.log = append(WorldState.log, NewLogEntry(WorldState.date, "You started your Adventure with %d coins and %d pounds of food", WorldState.player.money, WorldState.player.food))
+		WorldState.Player.Init()
+		WorldState.Log = append(WorldState.Log, NewLogEntry(WorldState.Date, "You started your Adventure with %d coins and %d pounds of food", WorldState.Player.Money, WorldState.Player.Food))
 		g.DeleteView("charBackground")
 		g.DeleteView("charInfo")
 		g.DeleteView("charInterface")

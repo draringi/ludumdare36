@@ -13,19 +13,19 @@ const (
 )
 
 func huntForFoodWithMagic(p *Player) string {
-	if p.mana < huntSpellCost {
+	if p.Mana < huntSpellCost {
 		return "Not enough mana to hunt"
 	}
-	p.mana -= huntSpellCost
+	p.Mana -= huntSpellCost
 	foodFound := rand.Intn(huntFoodVariance) + huntFoodBase
-	p.food += uint16(foodFound)
+	p.Food += uint16(foodFound)
 	return fmt.Sprintf("Found %d lb of food while hunting.", foodFound)
 }
 
 func huntAction(g *gocui.Gui, v *gocui.View) error {
-	str := huntForFoodWithMagic(WorldState.player)
+	str := huntForFoodWithMagic(WorldState.Player)
 	WorldState.logLock.Lock()
-	WorldState.log = append(WorldState.log, LogEntry{WorldState.date, str})
+	WorldState.Log = append(WorldState.Log, LogEntry{WorldState.Date, str})
 	WorldState.logLock.Unlock()
 	updateGUI(g)
 	return nil

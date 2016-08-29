@@ -63,6 +63,12 @@ func menuSelect(g *gocui.Gui, v *gocui.View) error {
 			if unpauseOnMenuLeave {
 				WorldState.gameLoop.TogglePause()
 			}
+		case menuLoadID:
+			g.DeleteView("menu")
+			return createLoadSaveView(g, LOADMODE)
+		case menuSaveID:
+			g.DeleteView("menu")
+			return createLoadSaveView(g, SAVEMODE)
 		case menuQuitID:
 			return gocui.ErrQuit
 		}
@@ -104,6 +110,18 @@ func loadMenu(g *gocui.Gui, v *gocui.View) error {
 			return err
 		}
 		err = g.SetCurrentView("menu")
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func exitMenu(g *gocui.Gui, v *gocui.View) error {
+	g.DeleteView(v.Name())
+	err := g.SetCurrentView("control")
+	if err != nil {
+		err = g.SetCurrentView("startMenu")
 		if err != nil {
 			return err
 		}

@@ -2,84 +2,84 @@ package main
 
 // Generic character type, for both the player, and their party
 type Character struct {
-	name      string
-	health    int
-	maxHealth int
-	hunger    int8
-	alive     bool
-	//status *Status
+	Name      string
+	Health    int
+	MaxHealth int
+	Hunger    int8
+	Alive     bool
+	//status *Status // Never did implement this...
 }
 
 func (c *Character) String() string {
-	return c.name
+	return c.Name
 }
 
 func (c *Character) Init() {
-	c.maxHealth = 100
-	c.hunger = 10
-	c.alive = true
+	c.MaxHealth = 100
+	c.Hunger = 10
+	c.Alive = true
 }
 
 func (c *Character) Heal(val int) int {
-	if c.health == c.maxHealth {
+	if c.Health == c.MaxHealth {
 		return 0
 	}
 	healed := val
 	if val > 0 {
-		c.health += val
-		if c.health > c.maxHealth {
-			healed = c.maxHealth - c.health
-			c.health = c.maxHealth
+		c.Health += val
+		if c.Health > c.MaxHealth {
+			healed = c.MaxHealth - c.Health
+			c.Health = c.MaxHealth
 		}
 	} else {
-		c.health = c.maxHealth
+		c.Health = c.MaxHealth
 	}
 	return healed
 }
 
 func (c *Character) HungerEffect(healingRate float64) {
-	if c.hunger > 0 {
+	if c.Hunger > 0 {
 		// Heal
-		healAmmount := int(healingRate * float64(c.hunger))
+		healAmmount := int(healingRate * float64(c.Hunger))
 		if healAmmount > 0 {
 			healed := c.Heal(healAmmount)
 			if healed > 0 {
 				WorldState.logLock.Lock()
-				WorldState.log = append(WorldState.log, NewLogEntry(WorldState.date, "%v recovered %d points of health", c, healed))
+				WorldState.Log = append(WorldState.Log, NewLogEntry(WorldState.Date, "%v recovered %d points of health", c, healed))
 				WorldState.logLock.Unlock()
 			}
 		}
 	} else {
 		//take damage, unless at hunger == 0
-		c.health += int(c.hunger)
+		c.Health += int(c.Hunger)
 	}
 }
 
 func (c *Character) AliveCheck() {
-	if c.alive && c.health < 1 {
-		c.alive = false
+	if c.Alive && c.Health < 1 {
+		c.Alive = false
 		WorldState.logLock.Lock()
-		WorldState.log = append(WorldState.log, NewLogEntry(WorldState.date, "%v has died", c))
+		WorldState.Log = append(WorldState.Log, NewLogEntry(WorldState.Date, "%v has died", c))
 		WorldState.logLock.Unlock()
 	}
 }
 
 func (c *Character) HungerString() string {
-	if c.hunger == maxHunger {
+	if c.Hunger == maxHunger {
 		return "Very Full"
-	} else if c.hunger > 7 {
+	} else if c.Hunger > 7 {
 		return "Full"
-	} else if c.hunger > 4 {
+	} else if c.Hunger > 4 {
 		return "Well Fed"
-	} else if c.hunger > -1 {
+	} else if c.Hunger > -1 {
 		return "Satisfied"
-	} else if c.hunger > -3 {
+	} else if c.Hunger > -3 {
 		return "Hungry"
-	} else if c.hunger > -6 {
+	} else if c.Hunger > -6 {
 		return "Very Hungry"
-	} else if c.hunger > -8 {
+	} else if c.Hunger > -8 {
 		return "Ravished"
-	} else if c.hunger > -10 {
+	} else if c.Hunger > -10 {
 		return "Starving"
 	} else {
 		return "At Death's Door"

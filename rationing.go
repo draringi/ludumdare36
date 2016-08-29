@@ -64,26 +64,26 @@ func (r Rationing) AmountEaten(n uint16) uint16 {
 func (r Rationing) HungerMod(c *Character) {
 	switch r {
 	case rationsFILLING:
-		if c.hunger < maxHunger {
-			c.hunger++
+		if c.Hunger < maxHunger {
+			c.Hunger++
 		}
 	case rationsSATISFACTORY:
-		if c.hunger > 3 {
-			c.hunger--
-		} else if c.hunger < 1 {
-			c.hunger++
+		if c.Hunger > 3 {
+			c.Hunger--
+		} else if c.Hunger < 1 {
+			c.Hunger++
 		}
 	case rationsPOOR:
-		if c.hunger > minFedHunger {
-			c.hunger--
+		if c.Hunger > minFedHunger {
+			c.Hunger--
 		} else {
-			c.hunger++
+			c.Hunger++
 		}
 	case rationsNOFOOD:
-		if c.hunger > minHunger {
-			c.hunger -= 2
-			if c.hunger < minHunger {
-				c.hunger = minHunger
+		if c.Hunger > minHunger {
+			c.Hunger -= 2
+			if c.Hunger < minHunger {
+				c.Hunger = minHunger
 			}
 		}
 	}
@@ -135,7 +135,7 @@ func describeSpeed(v *gocui.View, s int) {
 	v.SetOrigin(0, 0)
 	switch s {
 	case 0: // Current
-		fmt.Fprintf(v, "Your current speed setting (%v)", WorldState.player.rationing)
+		fmt.Fprintf(v, "Your current speed setting (%v)", WorldState.Player.Rationing)
 	case 1: // Rest
 		fmt.Fprint(v, rationsFILLING.Desc())
 	case 2: // Slow
@@ -185,11 +185,11 @@ func rationingSelect(g *gocui.Gui, v *gocui.View) error {
 
 		switch cy {
 		case 1: // Rest
-			WorldState.player.rationing = rationsFILLING
+			WorldState.Player.Rationing = rationsFILLING
 		case 2: // Slow
-			WorldState.player.rationing = rationsSATISFACTORY
+			WorldState.Player.Rationing = rationsSATISFACTORY
 		case 3: // Standard
-			WorldState.player.rationing = rationsPOOR
+			WorldState.Player.Rationing = rationsPOOR
 		}
 	}
 	g.DeleteView("rationingMenu")
@@ -201,7 +201,7 @@ func rationingSelect(g *gocui.Gui, v *gocui.View) error {
 	if err != nil {
 		return err
 	}
-	printLogsToView(WorldState.log, logView)
+	printLogsToView(WorldState.Log, logView)
 	statusView, err := g.View("rightStatus")
 	if err != nil {
 		return err

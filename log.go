@@ -6,12 +6,12 @@ import (
 )
 
 type LogEntry struct {
-	date Date
-	msg  string
+	Date Date
+	Msg  string
 }
 
 func (l LogEntry) String() string {
-	return fmt.Sprintf("[%v] %s", l.date, l.msg)
+	return fmt.Sprintf("[%v] %s", l.Date, l.Msg)
 }
 
 func printLogsToView(logs []LogEntry, v *gocui.View) {

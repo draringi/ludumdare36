@@ -103,7 +103,7 @@ func describeRationing(v *gocui.View, s int) {
 	v.SetOrigin(0, 0)
 	switch s {
 	case 0: // Current
-		fmt.Fprintf(v, "Your current speed setting (%v)", WorldState.player.speed)
+		fmt.Fprintf(v, "Your current speed setting (%v)", WorldState.Player.Speed)
 	case 1: // Rest
 		fmt.Fprint(v, "Rest means you stay where you are and rest. You don't make any progress, and you still consume food\nYou do however avoid any bad events and it allows for your party to heal.")
 	case 2: // Slow
@@ -155,13 +155,13 @@ func soundSelect(g *gocui.Gui, v *gocui.View) error {
 
 		switch cy {
 		case 1: // Rest
-			WorldState.player.speed = STOPPED
+			WorldState.Player.Speed = STOPPED
 		case 2: // Slow
-			WorldState.player.speed = SLOW
+			WorldState.Player.Speed = SLOW
 		case 3: // Standard
-			WorldState.player.speed = STANDARD
+			WorldState.Player.Speed = STANDARD
 		case 4: // Fast
-			WorldState.player.speed = FAST
+			WorldState.Player.Speed = FAST
 		}
 	}
 	g.DeleteView("soundMenu")
@@ -173,7 +173,7 @@ func soundSelect(g *gocui.Gui, v *gocui.View) error {
 	if err != nil {
 		return err
 	}
-	printLogsToView(WorldState.log, logView)
+	printLogsToView(WorldState.Log, logView)
 	statusView, err := g.View("rightStatus")
 	if err != nil {
 		return err

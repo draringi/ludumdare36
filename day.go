@@ -22,9 +22,9 @@ var months = []Month{
 }
 
 type Date struct {
-	year  uint16
-	month uint8
-	day   uint8
+	Year  uint16
+	Month uint8
+	Day   uint8
 }
 
 type Month struct {
@@ -33,7 +33,7 @@ type Month struct {
 }
 
 func (d Date) String() string {
-	return fmt.Sprintf("%d %s %d PB", d.day, months[d.month].String(), d.year)
+	return fmt.Sprintf("%d %s %d PB", d.Day, months[d.Month].String(), d.Year)
 }
 
 func (m Month) String() string {
@@ -42,17 +42,17 @@ func (m Month) String() string {
 
 func (d Date) Next() Date {
 	nextDate := d
-	m := months[d.month]
-	if d.day == m.days {
-		nextDate.day = 1
-		if d.month == 11 {
-			nextDate.month = 0
-			nextDate.year++
+	m := months[d.Month]
+	if d.Day == m.days {
+		nextDate.Day = 1
+		if d.Month == 11 {
+			nextDate.Month = 0
+			nextDate.Year++
 		} else {
-			nextDate.month++
+			nextDate.Month++
 		}
 	} else {
-		nextDate.day++
+		nextDate.Day++
 	}
 	return nextDate
 }

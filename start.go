@@ -61,12 +61,13 @@ func startSelect(g *gocui.Gui, v *gocui.View) error {
 			g.DeleteView("startBackground")
 			WorldState = new(gamestate)
 			WorldState.logLock = new(sync.Mutex)
-			WorldState.date = startDate
-			WorldState.player = new(Player)
-			WorldState.player.character = new(Character)
+			WorldState.Date = startDate
+			WorldState.Player = new(Player)
+			WorldState.Player.Character = new(Character)
 			initCreationScreenSettings()
 			g.SetLayout(charCreationLayout)
-			//unpause()
+		case startLoadID:
+			return createLoadSaveView(g, LOADMODE)
 		case startQuitID:
 			return gocui.ErrQuit
 		}

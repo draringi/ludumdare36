@@ -9,28 +9,28 @@ var (
 type playerModifier func(p *Player)
 
 func doctorMod(p *Player) {
-	p.attributes.healingRate *= 2
-	p.character.maxHealth += 50
-	for _, c := range p.party {
-		c.maxHealth += 50
+	p.Attributes.HealingRate *= 2
+	p.Character.MaxHealth += 50
+	for _, c := range p.Party {
+		c.MaxHealth += 50
 	}
 }
 
 func magusMod(p *Player) {
-	p.attributes.maxMana += 50
-	p.attributes.manaRecovery = 1
+	p.Attributes.MaxMana += 50
+	p.Attributes.ManaRecovery = 1
 }
 
 func nobleMod(p *Player) {
-	p.money += 5000
+	p.Money += 5000
 }
 
 func quillMod(p *Player) {
-	p.attributes.movementRate = 1.5
+	p.Attributes.MovementRate = 1.5
 }
 
 type Profession struct {
-	name        string
+	Name        string
 	description string
 	modPlayer   playerModifier
 }
@@ -47,5 +47,5 @@ func init() {
 }
 
 func (p *Profession) String() string {
-	return p.name
+	return p.Name
 }
