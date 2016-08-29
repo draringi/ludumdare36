@@ -21,6 +21,8 @@ func main() {
 		log.Panicln(err)
 	}
 	defer g.Close()
+	g.SelBgColor = gocui.ColorWhite
+	g.SelFgColor = gocui.ColorBlack
 	g.Cursor = false
 	g.SetLayout(initLayout)
 	err = setKeyBindings(g)
